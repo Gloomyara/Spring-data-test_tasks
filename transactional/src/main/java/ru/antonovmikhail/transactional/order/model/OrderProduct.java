@@ -1,9 +1,6 @@
 package ru.antonovmikhail.transactional.order.model;
 
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 import ru.antonovmikhail.transactional.product.model.Product;
@@ -20,11 +17,9 @@ import java.util.Objects;
 public class OrderProduct {
 
     @EmbeddedId
-    private OrderProductKey key;
+    private OrderProductKey id;
     @OneToOne
-    @PrimaryKeyJoinColumn(name = "product_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
+    @PrimaryKeyJoinColumn
     private Product product;
     private Long quantity;
 
@@ -36,7 +31,7 @@ public class OrderProduct {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         OrderProduct other = (OrderProduct) o;
-        return getKey() != null && Objects.equals(getKey(), other.getKey());
+        return getId() != null && Objects.equals(getId(), other.getId());
     }
 
     @Override

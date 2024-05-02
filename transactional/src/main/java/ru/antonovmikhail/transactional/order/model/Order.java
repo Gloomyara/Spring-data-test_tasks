@@ -39,7 +39,7 @@ public class Order {
     Boolean paid;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DATE_TIME_PATTERN)
     private LocalDateTime updateDate;
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

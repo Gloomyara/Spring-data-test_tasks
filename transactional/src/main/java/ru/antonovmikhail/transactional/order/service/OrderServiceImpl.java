@@ -39,17 +39,12 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new EntityNotFoundException());
         checkStock(order);
         checkAmountAndSetPaid(order);
-        for (OrderProduct orderProduct : order.getProducts()) {
-            Product product = orderProduct.getProduct();
-            Long stock = product.getQuantity();
-            stock -= orderProduct.getQuantity();
-            product.setQuantity(stock);
-        }
         return mapper.toDto(order);
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    private void checkStock(Order order) {
+    @Override
+    public void checkStock(Order order) {
         for (OrderProduct orderProduct : order.getProducts()) {
             Product product = orderProduct.getProduct();
             Long stock = product.getQuantity();
@@ -57,11 +52,13 @@ public class OrderServiceImpl implements OrderService {
             if (stock < 0) {
                 throw new InsufficientAmountException("На складе не хватает:" + stock * -1 + " " + product.getName());
             }
+            product.setQuantity(stock);
         }
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
-    private void checkAmountAndSetPaid(Order order) {
+    @Override
+    public void checkAmountAndSetPaid(Order order) {
         Customer customer = order.getCustomer();
         BigDecimal balance = customer.getBalance().subtract(order.getTotalAmount());
         if (balance.compareTo(BigDecimal.ZERO) < 0) throw new InsufficientAmountException("Недостаточно средств");

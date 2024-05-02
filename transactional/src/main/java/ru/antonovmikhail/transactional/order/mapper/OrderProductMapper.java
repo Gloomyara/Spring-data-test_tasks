@@ -23,8 +23,8 @@ public interface OrderProductMapper {
     @Mapping(target = "unitPrice", source = "product.price")
     List<OrderProductDtoOut> toDto(List<OrderProduct> entityList);
 
-    @Mapping(target = "key.orderId", source = "orderId")
-    @Mapping(target = "key.productId", source = "productId")
+    @Mapping(target = "id.orderId", source = "orderId")
+    @Mapping(target = "id.productId", source = "productId")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     OrderProduct toEntity(OrderProductDtoIn dto);
 
