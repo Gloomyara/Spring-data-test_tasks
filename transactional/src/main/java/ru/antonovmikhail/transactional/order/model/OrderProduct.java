@@ -1,11 +1,13 @@
 package ru.antonovmikhail.transactional.order.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 import ru.antonovmikhail.transactional.product.model.Product;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity(name = "orders_products")
 @Getter
@@ -16,10 +18,16 @@ import java.util.Objects;
 @AllArgsConstructor
 public class OrderProduct {
 
-    @EmbeddedId
-    private OrderProductKey id;
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id")
+    @JsonProperty(value = "uuid")
+    private UUID id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Order order;
+    @OneToOne(fetch = FetchType.EAGER)
     private Product product;
     private Long quantity;
 
