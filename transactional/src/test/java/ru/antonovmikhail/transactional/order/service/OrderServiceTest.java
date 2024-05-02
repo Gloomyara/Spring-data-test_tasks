@@ -1,16 +1,17 @@
-package ru.antonovmikhail.transactional.order.repository;
+package ru.antonovmikhail.transactional.order.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.util.Pair;
 import ru.antonovmikhail.transactional.customer.model.Customer;
 import ru.antonovmikhail.transactional.customer.repository.CustomerRepository;
 import ru.antonovmikhail.transactional.order.model.Order;
 import ru.antonovmikhail.transactional.order.model.OrderProduct;
 import ru.antonovmikhail.transactional.order.model.OrderProductKey;
+import ru.antonovmikhail.transactional.order.repository.OrderProductRepository;
+import ru.antonovmikhail.transactional.order.repository.OrderRepository;
 import ru.antonovmikhail.transactional.order.service.OrderService;
 import ru.antonovmikhail.transactional.product.model.Product;
 import ru.antonovmikhail.transactional.product.repository.ProductRepository;
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @SpringBootTest
-class OrderRepositoryTest {
+class OrderServiceTest {
     @Autowired
     private OrderRepository repository;
     @Autowired
@@ -69,8 +70,7 @@ class OrderRepositoryTest {
 
         System.out.println(orderProductRepository.findAll());
         System.out.println(service.placeOrder(order.getId().toString(), customer.getId().toString()));
-        System.out.println(product1);
-        System.out.println(product2);
+        System.out.println(productRepository.findAll());
         System.out.println(customerRepository.findById(customer.getId()));
     }
 
@@ -80,6 +80,7 @@ class OrderRepositoryTest {
         System.out.println(product2);
         System.out.println(customer);
         customer.setBalance(BigDecimal.valueOf(19999));
+        customerRepository.save(customer);
         InsufficientAmountException ex1 = Assertions.assertThrows(
                 InsufficientAmountException.class,
                 () -> service.placeOrder(order.getId().toString(), customer.getId().toString())
@@ -94,6 +95,7 @@ class OrderRepositoryTest {
         System.out.println(product2);
         System.out.println(customer);
         product2.setQuantity(99L);
+        productRepository.save(product2);
         InsufficientAmountException ex1 = Assertions.assertThrows(
                 InsufficientAmountException.class,
                 () -> service.placeOrder(order.getId().toString(), customer.getId().toString())

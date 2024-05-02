@@ -1,6 +1,9 @@
 package ru.antonovmikhail.transactional.order.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 import ru.antonovmikhail.transactional.product.model.Product;
@@ -18,8 +21,8 @@ public class OrderProduct {
 
     @EmbeddedId
     private OrderProductKey id;
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @ManyToOne
+    @JoinColumn(name = "product_id", insertable = false, updatable = false)
     private Product product;
     private Long quantity;
 

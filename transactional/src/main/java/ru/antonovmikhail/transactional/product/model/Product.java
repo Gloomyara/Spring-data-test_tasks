@@ -3,7 +3,9 @@ package ru.antonovmikhail.transactional.product.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldNameConstants;
 import org.hibernate.proxy.HibernateProxy;
+import ru.antonovmikhail.transactional.order.model.OrderProduct;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -26,6 +28,7 @@ public class Product {
     private String description;
     private BigDecimal price;
     private Long quantity;
+
 
     @Override
     public final boolean equals(Object o) {
