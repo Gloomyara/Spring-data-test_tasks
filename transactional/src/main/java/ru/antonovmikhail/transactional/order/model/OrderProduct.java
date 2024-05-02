@@ -9,6 +9,7 @@ import org.hibernate.proxy.HibernateProxy;
 import ru.antonovmikhail.transactional.product.model.Product;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity(name = "orders_products")
 @Getter

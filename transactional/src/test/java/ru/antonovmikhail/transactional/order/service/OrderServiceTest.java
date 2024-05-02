@@ -41,7 +41,7 @@ class OrderServiceTest {
     Order order = new Order(null, customer, "онлайн", false, LocalDateTime.now(), new ArrayList<>(), BigDecimal.valueOf(20000));
     OrderProduct orderProduct1 = new OrderProduct(null, null, 100L);
     OrderProduct orderProduct2 = new OrderProduct(null, null, 1000L);
-
+  
     @BeforeEach
     void setUp() {
         customer.setBalance(BigDecimal.valueOf(100000));

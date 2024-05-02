@@ -16,6 +16,7 @@ import ru.antonovmikhail.transactional.order.model.dto.OrderDtoIn;
 import ru.antonovmikhail.transactional.order.model.dto.OrderDtoOut;
 import ru.antonovmikhail.transactional.order.repository.OrderRepository;
 import ru.antonovmikhail.transactional.product.model.Product;
+import ru.antonovmikhail.transactional.product.repository.ProductRepository;
 import ru.antonovmikhail.transactional.util.handler.InsufficientAmountException;
 
 import java.math.BigDecimal;
@@ -30,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final CustomerRepository customerRepository;
     private final OrderRepository repository;
+    private final ProductRepository productRepository;
     private final OrderMapper mapper = Mappers.getMapper(OrderMapper.class);
 
     @Transactional
@@ -78,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = mapper.toEntity(dtoIn);
         order.setCustomer(customer);
         order.setUpdateDate(LocalDateTime.now());
-        return mapper.toDto(repository.save(order));
+        return mapper.toDto(order);
     }
 
     @Override
@@ -87,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
             Order order = repository.findById(UUID.fromString(dtoIn.getId())).orElseThrow(() -> new EntityNotFoundException());
             mapper.update(dtoIn, order);
             order.setUpdateDate(LocalDateTime.now());
-            return mapper.toDto(order);
+            return mapper.toDto(repository.save(order));
         }
         throw new EntityNotFoundException();
     }

@@ -34,10 +34,11 @@ CREATE TABLE IF NOT EXISTS orders
 
 CREATE TABLE IF NOT EXISTS orders_products
 (
-    order_id     UUID,
-    product_id   UUID,
-    quantity     INTEGER DEFAULT 0,
+    orders_products_id   UUID DEFAULT random_uuid(),
+    order_id             UUID,
+    product_id           UUID,
+    quantity             INTEGER DEFAULT 0,
     CONSTRAINT   fk_orders   FOREIGN KEY (order_id)  REFERENCES orders   (id) ON DELETE CASCADE,
     CONSTRAINT   fk_products FOREIGN KEY (product_id) REFERENCES products (id) ON DELETE CASCADE,
-    CONSTRAINT   pk_order_products PRIMARY KEY (order_id, product_id)
+    CONSTRAINT   pk_order_products PRIMARY KEY (orders_products_id)
 );
